@@ -10,7 +10,7 @@ UI = UIPrinter('authlib-injector-updater')
 custom_filename = 'authlib-injector.jar'
 
 
-def get_latest():
+def get_latest() -> dict():
     r = requests.get(
         'https://authlib-injector.yushi.moe/artifact/latest.json')
     return r.json()
@@ -23,21 +23,21 @@ def check_is_outdated(sha256) -> bool():
         return not checksum(f.read(), sha256)
 
 
-def download(url):
+def download(url) -> bytes():
     r = requests.get(url)
     return r.content
 
 
-def write_to_file(origin_filename, content):
+def write_to_file(origin_filename, content) -> None:
     with open(origin_filename, 'wb') as f:
         f.write(content)
 
 
-def checksum(content, sha256):
+def checksum(content, sha256) -> bool():
     return hashlib.sha256(content).hexdigest() == sha256
 
 
-def main():
+def main() -> None:
     UI.wait('正在获取版本信息')
     latest_json = get_latest()
     download_url = latest_json['download_url']
